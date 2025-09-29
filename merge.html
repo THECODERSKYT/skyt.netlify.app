@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Merger</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+            padding: 20px;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #4a4a4a;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            background: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .file-label:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        select {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: border 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+
+        #preview {
+            margin-top: 30px;
+            display: none;
+        }
+
+        #mergedImage {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            animation: zoomIn 0.5s ease;
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #downloadBtn {
+            display: none;
+            margin-top: 20px;
+            background: #007bff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        #downloadBtn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            button, .file-label, select {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Merger</h1>
+        <div class="input-group">
+            <label for="image1">Select First Image</label>
+            <label class="file-label" for="image1">Choose File</label>
+            <input type="file" id="image1" accept="image/*">
+            <p id="file1Name">No file selected</p>
+        </div>
+        <div class="input-group">
+            <label for="image2">Select Second Image</label>
+            <label class="file-label" for="image2">Choose File</label>
+            <input type="file" id="image2" accept="image/*">
+            <p id="file2Name">No file selected</p>
+        </div>
+        <select id="orientation">
+            <option value="">Select Orientation</option>
+            <option value="portrait">Portrait (Vertical Merge)</option>
+            <option value="landscape">Landscape (Horizontal Merge)</option>
+        </select>
+        <button id="mergeBtn">Merge Images</button>
+        <div id="preview">
+            <canvas id="mergedCanvas" style="display: none;"></canvas>
+            <img id="mergedImage" alt="Merged Image">
+        </div>
+        <a id="downloadBtn" download="merged_image.png">Download Merged Image</a>
+    </div>
+
+    <script>
+        const image1Input = document.getElementById('image1');
+        const image2Input = document.getElementById('image2');
+        const file1Name = document.getElementById('file1Name');
+        const file2Name = document.getElementById('file2Name');
+        const orientationSelect = document.getElementById('orientation');
+        const mergeBtn = document.getElementById('mergeBtn');
+        const preview = document.getElementById('preview');
+        const mergedCanvas = document.getElementById('mergedCanvas');
+        const mergedImage = document.getElementById('mergedImage');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // Update file name display when files are selected
+        image1Input.addEventListener('change', () => {
+            file1Name.textContent = image1Input.files[0] ? image1Input.files[0].name : 'No file selected';
+        });
+
+        image2Input.addEventListener('change', () => {
+            file2Name.textContent = image2Input.files[0] ? image2Input.files[0].name : 'No file selected';
+        });
+
+        // Merge images when the button is clicked
+        mergeBtn.addEventListener('click', () => {
+            const file1 = image1Input.files[0];
+            const file2 = image2Input.files[0];
+            const orientation = orientationSelect.value;
+
+            // Validate inputs
+            if (!file1 || !file2) {
+                alert('Please select two images.');
+                return;
+            }
+            if (!orientation) {
+                alert('Please select an orientation (Portrait or Landscape).');
+                return;
+            }
+
+            // Load images
+            const img1 = new Image();
+            const img2 = new Image();
+            let imagesLoaded = 0;
+
+            const checkImagesLoaded = () => {
+                imagesLoaded++;
+                if (imagesLoaded === 2) {
+                    try {
+                        const ctx = mergedCanvas.getContext('2d');
+                        let width, height;
+
+                        // Set canvas dimensions and draw images based on orientation
+                        if (orientation === 'portrait') {
+                            width = Math.max(img1.width, img2.width);
+                            height = img1.height + img2.height;
+                            mergedCanvas.width = width;
+                            mergedCanvas.height = height;
+                            ctx.fillStyle = '#ffffff'; // White background
+                            ctx.fillRect(0, 0, width, height);
+                            ctx.drawImage(img1, (width - img1.width) / 2, 0);
+                            ctx.drawImage(img2, (width - img2.width) / 2, img1.height);
+                        } else {
+                            width = img1.width + img2.width;
+                            height = Math.max(img1.height, img2.height);
+                            mergedCanvas.width = width;
+                            mergedCanvas.height = height;
+                            ctx.fillStyle = '#ffffff'; // White background
+                            ctx.fillRect(0, 0, width, height);
+                            ctx.drawImage(img1, 0, (height - img1.height) / 2);
+                            ctx.drawImage(img2, img1.width, (height - img2.height) / 2);
+                        }
+
+                        // Display merged image
+                        const dataUrl = mergedCanvas.toDataURL('image/png');
+                        mergedImage.src = dataUrl;
+                        preview.style.display = 'block';
+
+                        // Enable download button
+                        downloadBtn.href = dataUrl;
+                        downloadBtn.style.display = 'inline-block';
+                    } catch (error) {
+                        console.error('Error merging images:', error);
+                        alert('An error occurred while merging images. Please try again.');
+                    }
+                }
+            };
+
+            // Handle image loading errors
+            img1.onerror = () => {
+                alert('Error loading the first image. Please select a valid image.');
+            };
+            img2.onerror = () => {
+                alert('Error loading the second image. Please select a valid image.');
+            };
+
+            // Load images
+            img1.onload = checkImagesLoaded;
+            img2.onload = checkImagesLoaded;
+            img1.src = URL.createObjectURL(file1);
+            img2.src = URL.createObjectURL(file2);
+        });
+    </script>
+</body>
+</html>

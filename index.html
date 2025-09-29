@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUNNY KUMAR - All in One WebSite</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --btn-bg: #000000;
+            --btn-text: #ffffff;
+            --accent: #ff0000; /* For glitch or highlights */
+        }
+
+        body.dark {
+            --bg-color: #121212;
+            --text-color: #ffffff;
+            --btn-bg: #ffffff;
+            --btn-text: #000000;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        header {
+            text-align: center;
+            margin-top: 50px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1.glitch {
+            font-size: 3em;
+            position: relative;
+            display: inline-block;
+            color: var(--text-color);
+        }
+
+        h1.glitch::before,
+        h1.glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+        }
+
+        h1.glitch::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--accent);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+
+        h1.glitch::after {
+            left: -2px;
+            text-shadow: -2px 0 blue;
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip: rect(132px, auto, 101px, 30px); }
+            5% { clip: rect(17px, auto, 94px, 30px); }
+            10% { clip: rect(40px, auto, 66px, 30px); }
+            15% { clip: rect(87px, auto, 82px, 30px); }
+            20% { clip: rect(137px, auto, 61px, 30px); }
+            25% { clip: rect(34px, auto, 14px, 30px); }
+            30% { clip: rect(133px, auto, 81px, 30px); }
+            35% { clip: rect(76px, auto, 107px, 30px); }
+            40% { clip: rect(59px, auto, 130px, 30px); }
+            45% { clip: rect(29px, auto, 84px, 30px); }
+            50% { clip: rect(22px, auto, 67px, 30px); }
+            55% { clip: rect(67px, auto, 62px, 30px); }
+            60% { clip: rect(10px, auto, 105px, 30px); }
+            65% { clip: rect(78px, auto, 115px, 30px); }
+            70% { clip: rect(84px, auto, 39px, 30px); }
+            75% { clip: rect(87px, auto, 158px, 30px); }
+            80% { clip: rect(24px, auto, 88px, 30px); }
+            85% { clip: rect(138px, auto, 74px, 30px); }
+            90% { clip: rect(96px, auto, 136px, 30px); }
+            95% { clip: rect(53px, auto, 34px, 30px); }
+            100% { clip: rect(172px, auto, 140px, 30px); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(129px, auto, 36px, 30px); }
+            5% { clip: rect(14px, auto, 9px, 30px); }
+            10% { clip: rect(85px, auto, 66px, 30px); }
+            15% { clip: rect(91px, auto, 91px, 30px); }
+            20% { clip: rect(148px, auto, 138px, 30px); }
+            25% { clip: rect(38px, auto, 122px, 30px); }
+            30% { clip: rect(69px, auto, 54px, 30px); }
+            35% { clip: rect(128px, auto, 79px, 30px); }
+            40% { clip: rect(124px, auto, 46px, 30px); }
+            45% { clip: rect(8px, auto, 192px, 30px); }
+            50% { clip: rect(107px, auto, 49px, 30px); }
+            55% { clip: rect(86px, auto, 42px, 30px); }
+            60% { clip: rect(23px, auto, 87px, 30px); }
+            65% { clip: rect(87px, auto, 147px, 30px); }
+            70% { clip: rect(3px, auto, 85px, 30px); }
+            75% { clip: rect(26px, auto, 144px, 30px); }
+            80% { clip: rect(85px, auto, 14px, 30px); }
+            85% { clip: rect(50px, auto, 36px, 30px); }
+            90% { clip: rect(5px, auto, 53px, 30px); }
+            95% { clip: rect(43px, auto, 109px, 30px); }
+            100% { clip: rect(26px, auto, 165px, 30px); }
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-top: 10px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background-color: var(--btn-bg);
+            color: var(--btn-text);
+            padding: 15px 30px;
+            margin: 10px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .coming-soon {
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1em;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5em; }
+            h2 { font-size: 1.2em; }
+            .btn { font-size: 1em; padding: 12px 25px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="glitch" data-text="SUNNY KUMAR">SUNNY KUMAR</h1>
+        <h2>All in One WebSite</h2>
+    </header>
+
+    <main>
+        <div class="buttons">
+            <a href="merge.html" class="btn">Images Merge</a>
+            <button class="btn coming-soon">More Tools Coming Soon</button>
+        </div>
+    </main>
+
+    <footer>
+        <a href="https://youtube.com/@sunnykyt?si=ngOgChrW-POVtdx6" target="_blank" rel="noopener noreferrer">Visit My YouTube Channel</a>
+    </footer>
+
+    <div class="theme-switcher">
+        <label class="switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            const comingSoonBtn = document.querySelector('.coming-soon');
+
+            // Check for saved theme
+            if (localStorage.getItem('theme') === 'dark') {
+                body.classList.add('dark');
+                themeToggle.checked = true;
+            }
+
+            themeToggle.addEventListener('change', () => {
+                body.classList.toggle('dark');
+                localStorage.setItem('theme', body.classList.contains('dark') ? 'dark' : 'light');
+            });
+
+            comingSoonBtn.addEventListener('click', () => {
+                alert('More tools are coming soon!');
+            });
+        });
+    </script>
+</body>
+</html>

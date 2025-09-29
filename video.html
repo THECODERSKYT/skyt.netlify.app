@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Under Maintenance</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 40px 60px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 700px;
+      width: 90%;
+      backdrop-filter: blur(5px);
+      animation: slideUp 1.2s ease-out;
+    }
+
+    @keyframes slideUp {
+      0% { transform: translateY(50px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #1976d2;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .maintenance-text {
+      color: #d32f2f;
+      font-size: 2.5em;
+      font-weight: 700;
+      margin: 0 0 15px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px rgba(211, 47, 47, 0.7); }
+      to { text-shadow: 0 0 10px rgba(211, 47, 47, 0.9), 0 0 15px rgba(211, 47, 47, 0.6); }
+    }
+
+    .subtext {
+      color: #555;
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #1976d2;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .button:hover {
+      background-color: #1565c0;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(25, 118, 210, 0.3);
+    }
+
+    /* Responsive for phone portrait */
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px 30px;
+        width: 95%;
+      }
+      .maintenance-text {
+        font-size: 1.8em;
+      }
+      .subtext {
+        font-size: 1em;
+      }
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
+      }
+      .button {
+        padding: 10px 20px;
+      }
+    }
+
+    /* For desktop landscape */
+    @media (min-width: 601px) {
+      .container {
+        max-width: 800px;
+        padding: 50px 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="spinner"></div>
+    <h1 class="maintenance-text">This Page Is Under Maintenance</h1>
+    <p class="subtext">We are enhancing our platform to serve you better. Please check back soon. Thank you for your patience!</p>
+    <a href="#" class="button">Notify Me When Live</a>
+  </div>
+</body>
+</html>

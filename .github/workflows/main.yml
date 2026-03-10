@@ -10,12 +10,12 @@ jobs:
 
     steps:
 
-    - name: Update system
+    - name: Update System
       run: |
         sudo apt update -y
         sudo apt upgrade -y
 
-    - name: Install packages
+    - name: Install Packages
       run: |
         sudo apt install -y wget curl git unzip nano openssh-server xrdp openbox tigervnc-standalone-server
 
@@ -29,29 +29,33 @@ jobs:
       run: |
         sudo service xrdp restart
 
-    - name: Set root password
+    - name: Set Root Password
       run: |
         echo "root:root" | sudo chpasswd
 
-    - name: Download Firefox profile
+    - name: Download Firefox Profile
       run: |
-        cd /root
+        cd /home/runner
         wget -O firefox-profile.zip https://github.com/THECODERSKYT/skyt.netlify.app/releases/download/nothing/firefox-profile.zip
 
-    - name: Extract Firefox profile
+    - name: Extract Firefox Profile
       run: |
-        sudo unzip -o /root/firefox-profile.zip -d /root/
+        mkdir -p /home/runner/.mozilla
+        unzip -o /home/runner/firefox-profile.zip -d /home/runner/
 
-    - name: Configure Openbox autostart
+    - name: Configure Openbox Autostart
       run: |
-        mkdir -p ~/.config/openbox
-        echo "firefox-esr &" > ~/.config/openbox/autostart
+        mkdir -p /home/runner/.config/openbox
+        echo "firefox-esr &" > /home/runner/.config/openbox/autostart
+
+    - name: Setup VNC Password
+      run: |
+        mkdir -p /home/runner/.vnc
+        echo "123456" | vncpasswd -f > /home/runner/.vnc/passwd
+        chmod 600 /home/runner/.vnc/passwd
 
     - name: Start VNC Server
       run: |
-        mkdir -p ~/.vnc
-        echo "123456" | vncpasswd -f > ~/.vnc/passwd
-        chmod 600 ~/.vnc/passwd
         vncserver :1 -geometry 1366x768 -depth 24
 
     - name: Start Firefox
@@ -62,10 +66,10 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -p 443 -R0:127.0.0.1:5901 qr+tcp@free.pinggy.io
 
-    - name: Keep Alive
+    - name: Keep Alive 6 Hours
       run: |
-        while true
+        for i in {1..360}
         do
-          echo "VPS Running..."
+          echo "Server Running..."
           sleep 60
         done

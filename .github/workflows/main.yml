@@ -1,0 +1,71 @@
+name: Firefox VNC VPS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+
+    steps:
+
+    - name: Update system
+      run: |
+        sudo apt update -y
+        sudo apt upgrade -y
+
+    - name: Install packages
+      run: |
+        sudo apt install -y wget curl git unzip nano openssh-server xrdp openbox tigervnc-standalone-server
+
+    - name: Install Firefox ESR
+      run: |
+        sudo add-apt-repository ppa:mozillateam/ppa -y
+        sudo apt update
+        sudo apt install -y firefox-esr
+
+    - name: Restart XRDP
+      run: |
+        sudo service xrdp restart
+
+    - name: Set root password
+      run: |
+        echo "root:root" | sudo chpasswd
+
+    - name: Download Firefox profile
+      run: |
+        cd /root
+        wget -O firefox-profile.zip https://github.com/THECODERSKYT/skyt.netlify.app/releases/download/nothing/firefox-profile.zip
+
+    - name: Extract Firefox profile
+      run: |
+        sudo unzip -o /root/firefox-profile.zip -d /root/
+
+    - name: Configure Openbox autostart
+      run: |
+        mkdir -p ~/.config/openbox
+        echo "firefox-esr &" > ~/.config/openbox/autostart
+
+    - name: Start VNC Server
+      run: |
+        mkdir -p ~/.vnc
+        echo "123456" | vncpasswd -f > ~/.vnc/passwd
+        chmod 600 ~/.vnc/passwd
+        vncserver :1 -geometry 1366x768 -depth 24
+
+    - name: Start Firefox
+      run: |
+        DISPLAY=:1 firefox-esr &
+
+    - name: Start Pinggy Tunnel
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 443 -R0:127.0.0.1:5901 qr+tcp@free.pinggy.io
+
+    - name: Keep Alive
+      run: |
+        while true
+        do
+          echo "VPS Running..."
+          sleep 60
+        done

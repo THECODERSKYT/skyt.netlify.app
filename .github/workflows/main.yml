@@ -29,10 +29,6 @@ jobs:
       run: |
         sudo service xrdp restart
 
-    - name: Set Root Password
-      run: |
-        echo "root:root" | sudo chpasswd
-
     - name: Download Firefox Profile
       run: |
         cd /home/runner
